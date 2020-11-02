@@ -9,6 +9,7 @@
 
 Сделайте вывод, какая из трех реализаций эффективнее и почему
 """
+import cProfile, timeit
 
 
 def revers(enter_num, revers_num=0):
@@ -34,3 +35,26 @@ def revers_3(enter_num):
     revers_num = enter_num[::-1]
     return revers_num
 
+
+def main(enter_num):
+    revers(enter_num)
+    revers_2(enter_num)
+    revers_3(enter_num)
+
+
+enter_num = 4567897465
+
+cProfile.run('main(enter_num)')
+cProfile.run('revers(enter_num)')
+cProfile.run('revers_2(enter_num)')
+cProfile.run('revers_3(enter_num)')
+
+print(timeit.timeit("revers(enter_num)", setup="from __main__ import revers, enter_num"))
+print(timeit.timeit("revers_2(enter_num)", setup="from __main__ import revers_2, enter_num"))
+print(timeit.timeit("revers_3(enter_num)", setup="from __main__ import revers_3, enter_num"))
+
+"""Первая реализация самая медленная в связи с перебором каждого элемента введеннго числа
+Вторая реализация использует цикл while, что позволяет ускорить работу программы, но всё равно происходит перебор
+каждого элемента
+Третья реализация самая быстра в связи с тем, что использует внутренню функцию среза списка, что многократно ускоряет
+работу программы"""
